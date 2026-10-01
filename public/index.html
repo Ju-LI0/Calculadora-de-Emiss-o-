@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#163c2e">
+  <meta name="description" content="Estime sua pegada de carbono anual e descubra onde pequenas mudanças podem fazer diferença.">
+  <title>Raiz | Calculadora de pegada de carbono</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#inicio" aria-label="Raiz, início">
+      <span class="brand-mark" aria-hidden="true">r.</span>
+      <span>raiz<span class="brand-period">.</span></span>
+    </a>
+    <span class="topbar-note"><span class="status-dot" aria-hidden="true"></span> SUA PEGADA, EM PERSPECTIVA</span>
+  </header>
+
+  <main id="inicio" class="page-shell">
+    <section class="intro" aria-labelledby="page-title">
+      <p class="eyebrow">UM RETRATO DO SEU IMPACTO</p>
+      <h1 id="page-title">Cada escolha<br><em>deixa uma marca.</em></h1>
+      <p class="intro-copy">Descubra uma estimativa da sua pegada de carbono e encontre um próximo passo possível para o seu dia a dia.</p>
+      <div class="intro-meta"><span class="meta-line"></span> CERCA DE 2 MINUTOS</div>
+    </section>
+
+    <section class="calculator-layout" aria-label="Calculadora de emissão de carbono">
+      <div class="input-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">SEU DIA A DIA</p>
+            <h2>Conte um pouco da sua rotina</h2>
+          </div>
+          <span class="step-count"><span id="current-step">01</span><span class="step-divider">/</span>03</span>
+        </div>
+
+        <div class="tabs" role="tablist" aria-label="Categorias da calculadora">
+          <button class="tab is-active" id="tab-transporte" type="button" role="tab" aria-selected="true" aria-controls="panel-transporte" data-tab="transporte">
+            <span class="tab-index">01</span><span>Transporte</span>
+          </button>
+          <button class="tab" id="tab-casa" type="button" role="tab" aria-selected="false" aria-controls="panel-casa" data-tab="casa" tabindex="-1">
+            <span class="tab-index">02</span><span>Casa</span>
+          </button>
+          <button class="tab" id="tab-alimentacao" type="button" role="tab" aria-selected="false" aria-controls="panel-alimentacao" data-tab="alimentacao" tabindex="-1">
+            <span class="tab-index">03</span><span>Alimentação</span>
+          </button>
+        </div>
+
+        <form id="carbon-form" novalidate>
+          <section class="tab-panel" id="panel-transporte" role="tabpanel" aria-labelledby="tab-transporte" data-panel="transporte">
+            <div class="category-intro">
+              <span class="category-symbol" aria-hidden="true">↗</span>
+              <div><h3>Como você se desloca?</h3><p>Adicione os meios que usa. Quilometragem mensal; voos por ano.</p></div>
+            </div>
+            <div class="transport-tools">
+              <span class="field-label">Meios de transporte</span>
+              <button class="add-mode-button" id="add-transport-mode" type="button"><span aria-hidden="true">+</span> Adicionar meio</button>
+            </div>
+            <div class="transport-modes" id="transport-modes" aria-live="polite"></div>
+            <p class="transport-note">A bicicleta a pedal não adiciona emissões diretas. Veículos elétricos consideram o consumo de energia da rede.</p>
+            <div class="field-grid flight-field">
+              <label class="field field-full" for="flight-hours">
+                <span class="field-label">Horas de voo no ano</span>
+                <span class="input-wrap"><input id="flight-hours" name="flightHours" type="number" min="0" step="1" value="0" inputmode="decimal"><span class="input-unit">horas / ano</span></span>
+              </label>
+            </div>
+          </section>
+
+          <section class="tab-panel" id="panel-casa" role="tabpanel" aria-labelledby="tab-casa" data-panel="casa" hidden>
+            <div class="category-intro">
+              <span class="category-symbol" aria-hidden="true">⌂</span>
+              <div><h3>O que sua casa consome?</h3><p>Use a média mensal da conta de energia e do gás.</p></div>
+            </div>
+            <div class="field-grid">
+              <label class="field field-full" for="electricity">
+                <span class="field-label">Energia elétrica</span>
+                <span class="input-wrap"><input id="electricity" name="electricity" type="number" min="0" step="1" value="0" inputmode="decimal"><span class="input-unit">kWh / mês</span></span>
+              </label>
+              <label class="field" for="gas-amount">
+                <span class="field-label">Consumo de gás</span>
+                <span class="input-wrap"><input id="gas-amount" name="gasAmount" type="number" min="0" step="1" value="0" inputmode="decimal"><span class="input-unit" id="gas-unit-label">botijões / mês</span></span>
+              </label>
+              <label class="field" for="gas-type">
+                <span class="field-label">Tipo de gás</span>
+                <select id="gas-type" name="gasType">
+                  <option value="cylinder">Botijão de 13 kg</option>
+                  <option value="natural">Gás natural (m³)</option>
+                </select>
+              </label>
+            </div>
+          </section>
+
+          <section class="tab-panel" id="panel-alimentacao" role="tabpanel" aria-labelledby="tab-alimentacao" data-panel="alimentacao" hidden>
+            <div class="category-intro">
+              <span class="category-symbol" aria-hidden="true">✳</span>
+              <div><h3>O que você comeu neste dia?</h3><p>Registre suas refeições e acompanhe a estimativa de cada uma.</p></div>
+            </div>
+            <div class="meal-toolbar">
+              <label class="field meal-date-field" for="meal-date">
+                <span class="field-label">Dia registrado</span>
+                <input id="meal-date" type="date">
+              </label>
+              <button class="add-mode-button" id="add-meal" type="button"><span aria-hidden="true">+</span> Adicionar refeição</button>
+            </div>
+            <div class="meal-list" id="meal-list" aria-live="polite"></div>
+            <div class="food-day-summary" aria-live="polite">
+              <div><span>Emissões deste dia</span><strong><span id="food-daily-total">0,00</span> kg CO₂e</strong></div>
+              <div><span>Projeção anual</span><strong><span id="food-annual-total">0,00</span> tCO₂e</strong></div>
+            </div>
+            <p class="diet-note" id="food-day-note">Fatores médios por porção padrão. A projeção anual usa este dia como referência (365 dias).</p>
+          </section>
+
+          <div class="form-footer">
+            <span class="privacy-note"><span aria-hidden="true">↳</span> Dados usados apenas para calcular.</span>
+            <button class="calculate-button" type="submit"><span>Calcular pegada</span><span class="button-arrow" aria-hidden="true">↗</span></button>
+          </div>
+          <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+
+      <aside class="results-panel" aria-labelledby="result-title" aria-live="polite">
+        <div class="results-topline"><span class="eyebrow">SUA ESTIMATIVA ANUAL</span><span class="result-spark" aria-hidden="true">✳</span></div>
+        <div class="total-block">
+          <p class="result-caption" id="result-title">Sua pegada é de</p>
+          <div class="total-value"><span id="total-value">0,0</span><span class="total-unit">t</span></div>
+          <p class="total-description">toneladas de CO<sub>2</sub>e por ano</p>
+        </div>
+
+        <div class="benchmark">
+          <div class="benchmark-heading"><span>Referência global</span><span>4,5 t / ano</span></div>
+          <div class="benchmark-track" role="img" aria-label="Comparação com a média global de 4,5 toneladas por ano"><span id="benchmark-fill"></span><i></i></div>
+          <p id="benchmark-copy">A média global estimada é de 4,5 tCO₂e por pessoa ao ano.</p>
+        </div>
+
+        <div class="breakdown">
+          <div class="breakdown-heading"><h3>De onde vem</h3><span>tCO₂e / ano</span></div>
+          <div class="chart-row">
+            <div class="donut" id="donut-chart" role="img" aria-label="Gráfico de emissões por categoria"><span id="donut-total">0,0</span></div>
+            <ul class="legend" aria-label="Emissões por categoria">
+              <li><span class="legend-dot transport-dot"></span><span>Transporte</span><strong id="transport-total">0,0</strong></li>
+              <li><span class="legend-dot home-dot"></span><span>Casa</span><strong id="home-total">0,0</strong></li>
+              <li><span class="legend-dot food-dot"></span><span>Alimentação</span><strong id="food-total">0,0</strong></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="recommendation" id="recommendation">
+          <span class="recommendation-icon" aria-hidden="true">↗</span>
+          <div><p class="eyebrow">UM PRÓXIMO PASSO</p><p id="recommendation-text">Preencha seus dados para receber uma sugestão personalizada.</p></div>
+        </div>
+        <p class="method-note">Estimativa simplificada com fatores médios de emissão. O resultado pode variar conforme região e hábitos.</p>
+      </aside>
+    </section>
+    <footer class="page-footer"><span>RAIZ / PEGADA DE CARBONO</span><span>Pequenas escolhas também contam.</span></footer>
+  </main>
+</body>
+</html>
